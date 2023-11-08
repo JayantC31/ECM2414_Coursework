@@ -28,7 +28,7 @@ public class CardGame {
     //holds all the cards used in the game
     //private ArrayList<Card> pack = new ArrayList<Card>();
     //this int shows the number of players in the game
-    private int numberOfPlayers;
+    private static int numberOfPlayers;
     //this string is the location of the pack
     private String packLocation;
     //this is a check to see whether the game has ended or not
@@ -36,6 +36,15 @@ public class CardGame {
     //this is the number of the player who has won
     private Integer winnerNumber;
 
+    public static Integer getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(Integer num){
+        this.numberOfPlayers = num;
+    }
+
+    public CardGame(){ /* Nothing to instantiate */ }
 
     public static void main(String[] args) throws FileNotFoundException {
         UserInputs();
@@ -49,7 +58,7 @@ public class CardGame {
         System.out.println("UserInput test");
         // Allow user to input variables needed for game
         Scanner UserInput = new Scanner(System.in);
-        // this allows us to check whether player count is allowed for game to continue
+        // this boolean allows us to check whether player count is allowed for game to continue
         boolean NumOfPlayersValidity = false;
         System.out.println("Please enter the number of players: ");
         while (!NumOfPlayersValidity) {
@@ -60,12 +69,21 @@ public class CardGame {
                 if (PlayerCountInput <= 1) {
                     System.out.println("Please enter non negative number that is able to play the game: ");
                 } else {
+                    numberOfPlayers = PlayerCountInput;
                     NumOfPlayersValidity = true;
+
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid Integer input");
             }
         }
+
+        //System.out.println("Number of PLayers test = " + CardGame.numberOfPlayers);
+
+        System.out.println("Please enter location of pack to be loaded: ");
+
+
+
     }
 
 
