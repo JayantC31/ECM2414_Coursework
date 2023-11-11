@@ -30,7 +30,7 @@ public class CardGame {
     //this int shows the number of players in the game
     private static int numberOfPlayers;
     //this string is the location of the pack
-    private String packLocation;
+    private static String packLocation;
     //this is a check to see whether the game has ended or not
     private Boolean gameWon = false;
     //this is the number of the player who has won
@@ -54,7 +54,7 @@ public class CardGame {
     /*
      * In this method, we will check for what the user will input in the terminal
      */
-    public static void UserInputs(){
+    public static void UserInputs() {
         System.out.println("UserInput test");
         // Allow user to input variables needed for game
         Scanner UserInput = new Scanner(System.in);
@@ -78,12 +78,28 @@ public class CardGame {
             }
         }
 
-        //System.out.println("Number of PLayers test = " + CardGame.numberOfPlayers);
-
         System.out.println("Please enter location of pack to be loaded: ");
+        boolean CardValidity = false;
+        String CardLocationString = null;
+        while (!CardValidity) {
+            try {
+                CardLocationString = UserInput.nextLine();
+                System.out.println("Location is: " + CardLocationString);
+                CardValidity = validatePack(CardLocationString);
+
+            } catch (Exception e) {
+                System.out.println("Invalid Location input");
+            }
+
+        }
+        UserInput.close();
+        packLocation = CardLocationString;
+    }
 
 
+    public static boolean validatePack(String packLocation){
 
+        return true;
     }
 
 
