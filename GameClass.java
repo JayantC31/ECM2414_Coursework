@@ -166,13 +166,25 @@ public class GameClass {
 
 
 
+    public void createPlayers() {
+        //System.out.println(returnPack());
+    }
 
+    public void createDecks() {
+        //System.out.println(returnPack());
+    }
 
+    public void DistributeCards() {
+        //System.out.println(returnPack());
+    }
 
+    public void PlayGame() {
+        //System.out.println(returnPack());
+    }
 
-
-
-
+    public void CheckWinner() {
+        //System.out.println(returnPack());
+    }
 
 
 
