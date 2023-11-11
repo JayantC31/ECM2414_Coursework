@@ -26,6 +26,8 @@ public class CardGame {
         //this will be used to get the user inputs in order to start the game
         game.UserInputs();
 
+        //create the cards
+        game.createCards();
 
     }
 

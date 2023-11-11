@@ -17,14 +17,14 @@ public class GameClass {
     /*
      * Attributes
      */
+    public GameClass(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
 
     //this contains all players and creates a new player
     //private ArrayList<Player> players = new ArrayList<Player>();
     //this holds all the decks with a new deck for every two players
     //private ArrayList<CardDeck> decks = new ArrayList<CardDeck>();
     //holds all the cards used in the game
-    //private ArrayList<Card> pack = new ArrayList<Card>();
-    //this int shows the number of players in the game
+
     private int numberOfPlayers;
     //this string is the location of the pack
     private String packLocation;
@@ -40,9 +40,13 @@ public class GameClass {
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
+    private ArrayList<Cards> pack = new ArrayList<Cards>();
+    //this int shows the number of players in the game
 
-    public GameClass(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
-
+    //this allows pack to be returned
+    public ArrayList<Cards> returnPack(){
+        return pack;
+    }
     /*
      * In this method, we will check for what the user will input in the terminal
      */
@@ -57,37 +61,145 @@ public class GameClass {
             try {
                 String PlayerCountInputString = UserInput.nextLine();
                 int PlayerCountInput = Integer.parseInt(PlayerCountInputString);
+                // make sure the input is an integer
                 System.out.println("Username is: " + PlayerCountInput);
                 if (PlayerCountInput <= 1) {
                     System.out.println("Please enter non negative number that is able to play the game: ");
+                    // Don't allow game to start if user count is less then 2
                 } else {
                     numberOfPlayers = PlayerCountInput;
                     NumOfPlayersValidity = true;
-
+                    // if the count is valid then stop this while loop
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid Integer input");
+                // check for any exceptions for the integer
             }
         }
         System.out.println("Please enter location of pack to be loaded: ");
         boolean CardValidity = false;
         String CardLocationString = null;
+        // check if the card pack is valid by checking the location of pack first
         while (!CardValidity) {
             try {
                 CardLocationString = UserInput.nextLine();
                 System.out.println("Location is: " + CardLocationString);
                 CardValidity = validatePack(CardLocationString);
+                // go to the next method to validate the pack
             } catch (Exception e) {
                 System.out.println("Invalid Location input");
+                // catch any exceptions if any problems when location is inputted
             }
         }
+    // stop the user from inputting into the terminal to allow game to start checking packs and users
     UserInput.close();
     packLocation = CardLocationString;
     }
 
-
+    /*
+     * This is to check if the pack is valid
+     */
     public boolean validatePack(String packLocation){
 
-        return true;
+        boolean validityOfPack = false;
+        try {
+            // try to open the file
+            File GivenPack = new File(packLocation);
+            Scanner PackScan = new Scanner(GivenPack);
+            Integer LineCounter = 0;
+            while (PackScan.hasNextLine()) {
+                String EachLine = PackScan.nextLine();
+                LineCounter = LineCounter + 1;
+                // check for each line given in the file
+                // to check if the pack is correct, all values in list must be a single not-negative integer
+                // It must also be 8n ( 8 x getnumberofplayers )
+                int LineIntegerCheck = Integer.parseInt(EachLine);
+                if (LineIntegerCheck < 0 || LineIntegerCheck > 10) {
+                    validityOfPack = false;
+                    System.out.println("The pack is not valid: all values in list must be a single not-negative integer");
+                    System.exit(0);
+                }
+            }
+            try {
+                Integer TotalLineCount = LineCounter;
+                // To test: System.out.println("Total line count: " + TotalLineCount + " / num of players: " + getNumberOfPlayers());
+                // this is to test the total count of the lines used in the file given
+                if (TotalLineCount / getNumberOfPlayers() != 8) {
+                    validityOfPack = false;
+                    System.out.println("The pack is not valid: total count of values in list must be 8n");
+                    System.exit(0);
+                } else {
+                    validityOfPack = true;
+                    System.out.println("Pack is valid");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Pack not valid");
+                System.exit(0);
+                // catch any exceptions if any problems when pack is located
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found. ");
+            validityOfPack = false;
+        }
+    // return the boolean and check whether the pack is valid
+    return validityOfPack;
     }
+
+    /*
+     * This is to start the game by creating the cards
+     */
+    public void createCards() throws FileNotFoundException {
+        // For this to work the game needs the cards to be created
+        // do not need an if statement to check if pack is valid as that will be checked before
+        File PackOfNumbers = new File(packLocation);
+        Scanner PackScan = new Scanner(PackOfNumbers);
+        while (PackScan.hasNextLine()) {
+            String EachLine = PackScan.nextLine();
+            // System.out.println(EachLine);
+            int EachLineInteger = Integer.parseInt(EachLine);
+            pack.add(new Cards(EachLineInteger));
+
+        }
+        PackScan.close();
+        //System.out.println(returnPack());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
