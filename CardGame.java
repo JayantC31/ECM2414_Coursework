@@ -36,7 +36,7 @@ public class CardGame {
     }
 
 }
-class cardrunnable implements Runnable {
+class cardRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
             // System.out.println ("Card with face value: " + Thread.currentThread().getName() + " is running.");

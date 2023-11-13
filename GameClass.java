@@ -160,8 +160,8 @@ public class GameClass {
             Card card = new Card(EachLineInteger);
             pack.add(card);
             // Create a thread for each card
-            cardrunnable newThread = new cardrunnable ();
-            Thread CardThread = new Thread (newThread , String.valueOf(card.ReturnCardFaceValue()));
+            cardRunnable newCardThread = new cardRunnable ();
+            Thread CardThread = new Thread (newCardThread , String.valueOf(card.ReturnCardFaceValue()));
             CardThread.start ();
 
         }
@@ -178,8 +178,12 @@ public class GameClass {
             // System.out.println (Thread.currentThread().getName() + "is running.");
             try {
                 System.out.println("Player created with id " + i);
-
-
+                //Player player = new Player();
+                //playerArray.add(player)
+                // Create a thread for each card
+                //playerRunnable newPlayerThread = new playerRunnable ();
+                //Thread PlayerThread = new Thread (newPlayerThread , String.valueOf(player.ReturnPlayerID()));
+                //PlayerThread.start ();
 
 
             } catch ( Exception e) {
