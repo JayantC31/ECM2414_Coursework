@@ -40,11 +40,11 @@ public class GameClass {
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
-    private ArrayList<Cards> pack = new ArrayList<Cards>();
+    private ArrayList<Card> pack = new ArrayList<Card>();
     //this int shows the number of players in the game
 
     //this allows pack to be returned
-    public ArrayList<Cards> returnPack(){
+    public ArrayList<Card> returnPack(){
         return pack;
     }
     /*
@@ -157,7 +157,7 @@ public class GameClass {
             String EachLine = PackScan.nextLine();
             // System.out.println(EachLine);
             int EachLineInteger = Integer.parseInt(EachLine);
-            pack.add(new Cards(EachLineInteger));
+            pack.add(new Card(EachLineInteger));
 
         }
         PackScan.close();
