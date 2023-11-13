@@ -29,6 +29,21 @@ public class CardGame {
         //create the cards
         game.createCards();
 
+
+
+
     }
 
+}
+class cardrunnable implements Runnable {
+    public void run () {
+        for (int i = 0; i < 1; i ++) {
+            System.out.println (Thread.currentThread().getName() + "is running.");
+            try {
+                Thread.sleep (2000);
+            } catch ( InterruptedException e) {
+                System.out.println("Interupted exception");
+            }
+        }
+    }
 }

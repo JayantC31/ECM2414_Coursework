@@ -157,7 +157,12 @@ public class GameClass {
             String EachLine = PackScan.nextLine();
             // System.out.println(EachLine);
             int EachLineInteger = Integer.parseInt(EachLine);
-            pack.add(new Card(EachLineInteger));
+            Card card = new Card(EachLineInteger);
+            pack.add(card);
+            // Create a thread for each card
+            cardrunnable newThread = new cardrunnable ();
+            Thread CardThread = new Thread (newThread , String.valueOf(card.ReturnCardFaceValue()));
+            CardThread.start ();
 
         }
         PackScan.close();
@@ -167,7 +172,13 @@ public class GameClass {
 
 
     public void createPlayers() {
-        //System.out.println(returnPack());
+        // The amount of players has already been checked and is confirmed
+
+
+
+
+
+
     }
 
     public void createDecks() {
@@ -178,7 +189,7 @@ public class GameClass {
         //System.out.println(returnPack());
     }
 
-    public void PlayGame() {
+    public synchronized void PlayGame() {
         //System.out.println(returnPack());
     }
 
