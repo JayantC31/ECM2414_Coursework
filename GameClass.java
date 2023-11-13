@@ -173,7 +173,19 @@ public class GameClass {
 
     public void createPlayers() {
         // The amount of players has already been checked and is confirmed
+        System.out.println("Number of players: " + getNumberOfPlayers());
+        for (int i = 1; i < getNumberOfPlayers() + 1; i ++) {
+            // System.out.println (Thread.currentThread().getName() + "is running.");
+            try {
+                System.out.println("Player created with id " + i);
 
+
+
+
+            } catch ( Exception e) {
+                System.out.println("Exception caught when creating a new player");
+            }
+        }
 
 
 
