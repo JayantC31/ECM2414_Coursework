@@ -1,7 +1,10 @@
+import javax.script.ScriptEngine;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.Scanner; // import the Scanner class
+import java.util.List;
+
 
 /*
  * Game Class - Class for the Game
@@ -32,6 +35,9 @@ public class GameClass {
     private Boolean gameWon = false;
     //this is the number of the player who has won
     private Integer winnerNumber;
+
+    private List<CardDeck> decks = new ArrayList<>();
+
 
     public Integer getNumberOfPlayers(){
         return numberOfPlayers;
@@ -178,7 +184,7 @@ public class GameClass {
             // System.out.println (Thread.currentThread().getName() + "is running.");
             try {
                 System.out.println("Player created with id " + i);
-                //Player player = new Player();
+                Player player = new Player();
                 //playerArray.add(player)
                 // Create a thread for each card
                 //playerRunnable newPlayerThread = new playerRunnable ();
@@ -197,9 +203,36 @@ public class GameClass {
 
     }
 
-    public void createDecks() {
+    public void createDecks() throws FileNotFoundException{
+        for (int i = 0; i < numberOfPlayers; i++){
+            decks.add(new CardDeck());
+
+            Scanner scanner = new Scanner(new File (packLocation));
+
+            int deckIndex = 0;
+            int cardCount = 0;
+
+            while (scanner.hasNextLine()){
+                int cardValue = Integer.parseInt(scanner.nextLine().trim());
+                // Add the card to the current deck
+                decks.get(deckIndex).addCard(new Card(cardValue));
+                cardCount++;
+                if (cardCount == 8) {
+                    // Reset the card count and move to the next deck
+                    cardCount = 0;
+                    deckIndex++;
+                }
+            }
+            scanner.close();
+            }
+
+        for (int i = 0; i < decks.size(); i++) {
+            System.out.println("Deck " + (i + 1) + " contents: " + decks.get(i).getCards());
+        }
         //System.out.println(returnPack());
-    }
+        }
+
+
 
     public void DistributeCards() {
         //System.out.println(returnPack());
