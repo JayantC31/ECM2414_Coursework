@@ -44,7 +44,33 @@ public class CardGame {
 class cardRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
-            // System.out.println ("Card with face value: " + Thread.currentThread().getName() + " is running.");
+            //System.out.println ("Card with face value: " + Thread.currentThread().getName() + " is running.");
+            try {
+                Thread.sleep (2000);
+            } catch ( InterruptedException e) {
+                System.out.println("Interupted exception");
+            }
+        }
+    }
+}
+
+class deckRunnable implements Runnable {
+    public void run () {
+        for (int i = 0; i < 1; i ++) {
+            //System.out.println ("Deck with card values: " + Thread.currentThread().getName() + " is running.");
+            try {
+                Thread.sleep (2000);
+            } catch ( InterruptedException e) {
+                System.out.println("Interupted exception");
+            }
+        }
+    }
+}
+
+class playerRunnable implements Runnable {
+    public void run () {
+        for (int i = 0; i < 1; i ++) {
+            //System.out.println ("Player with value: " + Thread.currentThread().getName() + " is running.");
             try {
                 Thread.sleep (2000);
             } catch ( InterruptedException e) {
