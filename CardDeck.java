@@ -3,31 +3,36 @@
  * @author Jayant Chawla and Pui Kin Chan
  * */
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 
 public class CardDeck extends Thread {
 
-    private Queue<Card> cards = new LinkedList<>();
+    private final Integer cardDeckID;
+    private ArrayList<Card> cardsInDeck;
 
-    public synchronized void addCard(Card card) {
-        cards.add(card);
+    public CardDeck(Integer cardDeckID, ArrayList<Card> cardsInDeck) {
+        this.cardDeckID = cardDeckID;
+        this.cardsInDeck = cardsInDeck;
     }
 
-    public synchronized Card drawCard() {
-        return cards.poll();
+    public Integer returnCardDeckID() {
+        return cardDeckID;
     }
 
-    // Method to help with debugging
-    public synchronized List<Card> getCards() {
-        List<Card> cardList = new ArrayList<>();
-        for (Card card : cards) {
-            cardList.add(card);
-        }
-        return cardList;
+    public ArrayList<Card> returnCardsInDeck() {
+        return cardsInDeck;
     }
+
+    public void setCardsInDeck(ArrayList<Card> newCards) {
+        this.cardsInDeck = newCards;
+    }
+
+    public void addCardToDeck(Card card) {
+        this.cardsInDeck.add(card);
+    }
+
+
+
 
 }

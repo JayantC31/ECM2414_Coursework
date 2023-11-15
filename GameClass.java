@@ -1,10 +1,7 @@
-import javax.script.ScriptEngine;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.Scanner; // import the Scanner class
-import java.util.List;
-
 
 /*
  * Game Class - Class for the Game
@@ -30,24 +27,30 @@ public class GameClass {
 
     private int numberOfPlayers;
     //this string is the location of the pack
+
+    private int numberOfDecks;
     private String packLocation;
     //this is a check to see whether the game has ended or not
     private Boolean gameWon = false;
     //this is the number of the player who has won
     private Integer winnerNumber;
 
-    private List<CardDeck> decks = new ArrayList<>();
-
-
     public Integer getNumberOfPlayers(){
         return numberOfPlayers;
     }
+
+    public Integer getNumberOfDecks(){ return numberOfDecks;}
+
+    public void setNumberOfDecks(Integer num) { this.numberOfDecks = num;}
 
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
     private ArrayList<Card> pack = new ArrayList<Card>();
-    //this int shows the number of players in the game
+
+    ArrayList<CardDeck> decks = new ArrayList<>();
+    ArrayList<Player> players = new ArrayList<>();
+
 
     //this allows pack to be returned
     public ArrayList<Card> returnPack(){
@@ -177,66 +180,138 @@ public class GameClass {
 
 
 
+
+    /*
+     * This is to create the decks used to play the cards
+     */
+    public void createDecks() {
+        // The amount of players has already been checked and is confirmed
+        setNumberOfDecks(getNumberOfPlayers());
+        System.out.println("Number of decks: " + getNumberOfDecks());
+        //System.out.println(pack);
+        // Create 4 empty CardDecks
+        for (int i = 1; i <= getNumberOfDecks(); i++) {
+            CardDeck cardDeck = new CardDeck(i, new ArrayList<>());
+
+            decks.add(cardDeck);
+            deckRunnable newDeckThread = new deckRunnable();
+            Thread DeckThread = new Thread(newDeckThread , String.valueOf(cardDeck.returnCardDeckID()));
+            DeckThread.start ();
+        }
+        for (CardDeck cardDeck : decks) {
+            //System.out.println("Deck created with id " + cardDeck.returnCardDeckID());
+        }
+    }
+
+    /*
+     * This is to create the players for the game
+     */
     public void createPlayers() {
         // The amount of players has already been checked and is confirmed
         System.out.println("Number of players: " + getNumberOfPlayers());
-        for (int i = 1; i < getNumberOfPlayers() + 1; i ++) {
-            // System.out.println (Thread.currentThread().getName() + "is running.");
-            try {
-                System.out.println("Player created with id " + i);
-                Player player = new Player();
-                //playerArray.add(player)
-                // Create a thread for each card
-                //playerRunnable newPlayerThread = new playerRunnable ();
-                //Thread PlayerThread = new Thread (newPlayerThread , String.valueOf(player.ReturnPlayerID()));
-                //PlayerThread.start ();
+        // Create 4 empty Players
+        int numberOfPlayers = getNumberOfPlayers();
+        int totalPlayers = decks.size();
 
 
-            } catch ( Exception e) {
-                System.out.println("Exception caught when creating a new player");
-            }
+        for (int i = 1; i <= numberOfPlayers; i++) {
+            // Create CardDeck with the current player ID
+            CardDeck tempLeftDeck = new CardDeck(-1, new ArrayList<>());
+            CardDeck tempRightDeck = new CardDeck(-1, new ArrayList<>());
+
+            Player player = new Player(i, tempLeftDeck, new ArrayList<>(), tempRightDeck);
+
+            players.add(player);
+            playerRunnable newPlayerThread = new playerRunnable();
+            Thread PlayerThread = new Thread(newPlayerThread , String.valueOf(player.returnPlayerID()));
+            PlayerThread.start ();
+
         }
 
-
-
-
+        for (Player player : players) {
+            //System.out.println("Deck created with id " + player.returnPlayerID());
+        }
 
     }
 
-    public void createDecks() throws FileNotFoundException{
-        for (int i = 0; i < numberOfPlayers; i++){
-            decks.add(new CardDeck());
 
-            Scanner scanner = new Scanner(new File (packLocation));
-
-            int deckIndex = 0;
-            int cardCount = 0;
-
-            while (scanner.hasNextLine()){
-                int cardValue = Integer.parseInt(scanner.nextLine().trim());
-                // Add the card to the current deck
-                decks.get(deckIndex).addCard(new Card(cardValue));
-                cardCount++;
-                if (cardCount == 8) {
-                    // Reset the card count and move to the next deck
-                    cardCount = 0;
-                    deckIndex++;
+    /*
+     * This is to distribute the cards, to each deck and player
+     */
+    public void DistributeCards() {
+        int numPlayers = players.size();
+        int playerIndex = 0;
+        for (int i = 0; i < pack.size() / 2; i++) {
+            Card card = pack.get(i);
+            Player player = players.get(playerIndex);
+            // Add the card to the current CardDeck
+            player.addCardToPlayer(card);
+            // Move to the next deck in a round-robin fashion
+            playerIndex = (playerIndex + 1) % numPlayers;
+        }
+        // Print the results for each CardDeck after decks are filled
+        for (Player player : players) {
+            //System.out.println("Player ID: " + player.returnPlayerID());
+            //System.out.print("Cards in Player: ");
+            for (Card cardInDeck : player.returnPlayerCards()) {
+                //System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
+            }
+            //System.out.println();
+        }
+        int numDecks = decks.size();
+        int deckIndex = 0;
+        // Iterate through the cards
+        for (int i = pack.size() / 2; i < pack.size(); i++) {
+            Card card = pack.get(i);
+            // Find the CardDeck with the current index
+            CardDeck cardDeck = decks.get(deckIndex);
+            // Add the card to the current CardDeck
+            cardDeck.addCardToDeck(card);
+            // Move to the next deck in a round-robin fashion
+            deckIndex = (deckIndex + 1) % numDecks;
+        }
+        for (int i = 0; i < numberOfPlayers; i++) {
+            // Determine the actual decks based on player's ID
+            int leftDeckId = i + 1;
+            int rightDeckId = (i == numberOfPlayers - 1) ? 1 : i + 2;
+            // Find the actual left deck
+            CardDeck leftDeck = null;
+            for (CardDeck deck : decks) {
+                if (deck.returnCardDeckID() == leftDeckId) {
+                    leftDeck = deck;
+                    break;
                 }
             }
-            scanner.close();
+            // Find the actual right deck
+            CardDeck rightDeck = null;
+            for (CardDeck deck : decks) {
+                if (deck.returnCardDeckID() == rightDeckId) {
+                    rightDeck = deck;
+                    break;
+                }
             }
-
-        for (int i = 0; i < decks.size(); i++) {
-            System.out.println("Deck " + (i + 1) + " contents: " + decks.get(i).getCards());
+            // Update the player with the actual decks
+            Player player = players.get(i);
+            player.setLeftDeck(leftDeck);
+            player.setRightDeck(rightDeck);
+            // Print player information
+            System.out.print("Player " + player.returnPlayerID() + " has Deck: ");
+            for (Card cardInDeck : player.returnPlayerCards()) {
+                System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
+            }
+            System.out.println();
+            //System.out.println(" Left Deck: " + player.returnLeftDeck().returnCardDeckID() + " Right Deck: " + player.returnRightDeck().returnCardDeckID());
         }
-        //System.out.println(returnPack());
+        // Print the results for each CardDeck after decks are filled
+        for (CardDeck cardDeck : decks) {
+            System.out.print("Deck " + cardDeck.returnCardDeckID() + " has cards: ");
+            for (Card cardInDeck : cardDeck.returnCardsInDeck()) {
+                System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
+            }
+            System.out.println();
         }
-
-
-
-    public void DistributeCards() {
-        //System.out.println(returnPack());
     }
+
 
     public synchronized void PlayGame() {
         //System.out.println(returnPack());
