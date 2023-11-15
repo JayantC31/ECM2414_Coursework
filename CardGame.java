@@ -29,9 +29,14 @@ public class CardGame {
         //create the cards
         game.createCards();
 
+        //create the decks
+        game.createDecks();
+
         //create the players
         game.createPlayers();
 
+        //distribute the cards
+        game.DistributeCards();
 
     }
 

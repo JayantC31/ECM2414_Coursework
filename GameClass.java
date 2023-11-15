@@ -27,6 +27,8 @@ public class GameClass {
 
     private int numberOfPlayers;
     //this string is the location of the pack
+
+    private int numberOfDecks;
     private String packLocation;
     //this is a check to see whether the game has ended or not
     private Boolean gameWon = false;
@@ -37,11 +39,15 @@ public class GameClass {
         return numberOfPlayers;
     }
 
+    public Integer getNumberOfDecks(){ return numberOfDecks;}
+
+    public void setNumberOfDecks(Integer num) { this.numberOfDecks = num;}
+
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
     private ArrayList<Card> pack = new ArrayList<Card>();
-    //this int shows the number of players in the game
+
 
     //this allows pack to be returned
     public ArrayList<Card> returnPack(){
@@ -170,7 +176,28 @@ public class GameClass {
     }
 
 
+    ArrayList<CardDeck> decks = new ArrayList<>();
 
+    /*
+     * This is to create the decks used to play the cards
+     */
+    public void createDecks() {
+        // The amount of players has already been checked and is confirmed
+        setNumberOfDecks(getNumberOfPlayers());
+        System.out.println("Number of decks: " + getNumberOfDecks());
+        //System.out.println(pack);
+        // Create 4 empty CardDecks
+        for (int i = 1; i <= getNumberOfDecks(); i++) {
+            decks.add(new CardDeck(i, new ArrayList<>()));
+        }
+        for (CardDeck cardDeck : decks) {
+            System.out.println("Deck created with id " + cardDeck.returnCardDeckID());
+        }
+    }
+
+    /*
+     * This is to create the players for the game
+     */
     public void createPlayers() {
         // The amount of players has already been checked and is confirmed
         System.out.println("Number of players: " + getNumberOfPlayers());
@@ -191,19 +218,43 @@ public class GameClass {
             }
         }
 
-
-
-
-
     }
 
-    public void createDecks() {
-        //System.out.println(returnPack());
-    }
 
+    /*
+     * This is to distribute the cards, to each deck and player
+     */
     public void DistributeCards() {
-        //System.out.println(returnPack());
+        int numDecks = decks.size();
+        int deckIndex = 0;
+
+        // Iterate through the cards
+        for (int i = 0; i < pack.size() / 2; i++) {
+            Card card = pack.get(i);
+
+            // Find the CardDeck with the current index
+            CardDeck cardDeck = decks.get(deckIndex);
+
+            // Add the card to the current CardDeck
+            cardDeck.addCardToDeck(card);
+
+            // Move to the next deck in a round-robin fashion
+            deckIndex = (deckIndex + 1) % numDecks;
+        }
+
+        // Print the results for each CardDeck after decks are filled
+        for (CardDeck cardDeck : decks) {
+            System.out.println("CardDeck ID: " + cardDeck.returnCardDeckID());
+            System.out.print("Cards in Deck: ");
+            for (Card cardInDeck : cardDeck.returnCardsInDeck()) {
+                System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
+            }
+            System.out.println();
+        }
     }
+
+
+
 
     public synchronized void PlayGame() {
         //System.out.println(returnPack());
