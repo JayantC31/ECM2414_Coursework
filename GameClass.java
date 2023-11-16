@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner; // import the Scanner class
 
 /*
@@ -13,6 +14,8 @@ import java.util.Scanner; // import the Scanner class
 
 
 public class GameClass {
+
+    public static boolean gameWon;
 
     /*
      * Attributes
@@ -31,7 +34,7 @@ public class GameClass {
     private int numberOfDecks;
     private String packLocation;
     //this is a check to see whether the game has ended or not
-    private Boolean gameWon = false;
+    //private Boolean gameWon = false;
     //this is the number of the player who has won
     private Integer winnerNumber;
 
@@ -314,11 +317,53 @@ public class GameClass {
 
 
     public synchronized void PlayGame() {
-        //System.out.println(returnPack());
+        // Start player threads
+        List<Thread> playerThreads = new ArrayList<>();
+        for (Player player : players) {
+            Thread thread = new Thread(player);
+            thread.start(); // Start the player thread
+            playerThreads.add(thread);
+        }
+
+        // Monitor for the end of the game
+        boolean gameEnd = false;
+        while (!gameEnd) {
+
+            synchronized (this) {
+                if (gameWon) {
+                    gameEnd = true;
+                }
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        // Wait for all player threads to finish
+        for (Thread thread : playerThreads) {
+            try {
+                thread.join(); // Wait for the thread to terminate
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Game has ended - declare the winner and do any necessary cleanup
+        System.out.println("Game over. Player " + winnerNumber + " wins!");
     }
 
-    public void CheckWinner() {
-        //System.out.println(returnPack());
+
+    public synchronized static void CheckWinner(int playerId) {
+        if (!gameWon) {
+            gameWon = true;
+            Integer winnerId = playerId;
+            System.out.println("Player " + playerId + " wins!");
+
+        }
     }
 
 

@@ -33,6 +33,10 @@ public class CardDeck extends Thread {
     }
 
 
-
-
+    public synchronized Card drawCard() {
+        if (!cardsInDeck.isEmpty()) {
+            return cardsInDeck.remove(cardsInDeck.size() - 1); // Remove and return the top card
+        }
+        return null; // Or throw an exception if the deck is empty
+    }
 }
