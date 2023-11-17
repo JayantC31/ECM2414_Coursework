@@ -4,6 +4,8 @@
  * */
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CardDeck extends Thread {
@@ -39,4 +41,20 @@ public class CardDeck extends Thread {
         }
         return null; // Or throw an exception if the deck is empty
     }
+
+    public void run() {
+        try (FileWriter fileWriter = new FileWriter("deck" + cardDeckID + "_output.txt")) {
+            // Loop to continue the deck's actions until the game is won
+            fileWriter.write("Deck " + cardDeckID + " initial deck " + cardsInDeck + "\n");
+            while (!GameClass.gameWon) {
+                fileWriter.write("Deck " + cardDeckID + " deck " + cardsInDeck + "\n");
+
+
+                }
+            } catch (IOException exception) {
+                System.out.println("PROBLEM for deck");
+            }
+    }
+
+
 }

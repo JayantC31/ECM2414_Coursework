@@ -7,14 +7,13 @@
 import java.awt.print.PrinterGraphics;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
+
 
 public class Player extends Thread {
 
     private final Integer playerID;
-
+    private Random random = new Random();
     private CardDeck leftDeck;
     private CardDeck rightDeck;
 
@@ -23,10 +22,13 @@ public class Player extends Thread {
     public void run() {
         try (FileWriter fileWriter = new FileWriter("player" + playerID + "_output.txt")) {
             // Loop to continue the player's actions until the game is won
+            fileWriter.write("Player " + playerID + " initial hand " + playerCards + "\n");
+            fileWriter.write("ID: " + playerID + " preferred Denomination = " + (playerID) + "\n");
             while (!GameClass.gameWon) {
                 // 1. Draw a card from the left deck
                 Card drawnCard = leftDeck.drawCard();
                 playerCards.add(drawnCard);
+                fileWriter.write("left deck: " + leftDeck.returnCardsInDeck()   + "\n");
                 fileWriter.write("Player " + playerID + " draws a " + drawnCard.ReturnCardFaceValue() + " from deck " + leftDeck.returnCardDeckID() + "\n");
 
                 // 2. Choose a card to discard
@@ -36,7 +38,7 @@ public class Player extends Thread {
                 // 3. Discard to the right deck
                 rightDeck.addCardToDeck(cardToDiscard);
                 fileWriter.write("Player " + playerID + " discards a " + cardToDiscard.ReturnCardFaceValue() + " to deck " + rightDeck.returnCardDeckID() + "\n");
-
+                fileWriter.write("Player " + playerID + " hand is now " + playerCards + "\n");
                 // 4. Check for a winning hand
                 if (checkWinningCondition()) {
                     GameClass.CheckWinner(playerID);
@@ -44,36 +46,32 @@ public class Player extends Thread {
                     break;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println("PROBLEM");
             e.printStackTrace();
         }
     }
 
 
 
-    private Card chooseCardToDiscard() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Player " + playerID + ", choose a card to discard (1-" + playerCards.size() + "):");
-        for (int i = 0; i < playerCards.size(); i++) {
-            System.out.println((i + 1) + ": Card " + playerCards.get(i).ReturnCardFaceValue());
-        }
-
-        int cardIndex = -1;
-        while (cardIndex < 1 || cardIndex > playerCards.size()) {
-            try {
-                System.out.print("Enter the number of the card to discard: ");
-                cardIndex = Integer.parseInt(scanner.nextLine());
-                if (cardIndex < 1 || cardIndex > playerCards.size()) {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + playerCards.size());
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+    public Card chooseCardToDiscard(){
+        ArrayList<Card> possibleDiscardCards = new ArrayList<>();
+        //creates an ArrayList filled with all the cards that aren't the player's preferred card
+        for (Card card : playerCards) {
+            if (!(Objects.equals(card.ReturnCardFaceValue(), playerID))) {
+                possibleDiscardCards.add(card);
             }
         }
-
-        // Adjust for 0-based index
-        return playerCards.get(cardIndex - 1);
+        //selects a random integer which is the index for the card that we will remove and returns the card
+        int randomIndex = random.nextInt(possibleDiscardCards.size());
+        Card cardToDiscard = possibleDiscardCards.get(randomIndex);
+        playerCards.remove(cardToDiscard);
+        return cardToDiscard;
     }
+
+
+
+
 
     private boolean checkWinningCondition() {
 

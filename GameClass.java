@@ -36,7 +36,7 @@ public class GameClass {
     //this is a check to see whether the game has ended or not
     //private Boolean gameWon = false;
     //this is the number of the player who has won
-    private Integer winnerNumber;
+    private static Integer winnerNumber;
 
     public Integer getNumberOfPlayers(){
         return numberOfPlayers;
@@ -226,7 +226,9 @@ public class GameClass {
 
             players.add(player);
             playerRunnable newPlayerThread = new playerRunnable();
+
             Thread PlayerThread = new Thread(newPlayerThread , String.valueOf(player.returnPlayerID()));
+            //System.out.println(PlayerThread);
             PlayerThread.start ();
 
         }
@@ -323,18 +325,17 @@ public class GameClass {
             Thread thread = new Thread(player);
             thread.start(); // Start the player thread
             playerThreads.add(thread);
+            //System.out.println(thread);
         }
 
         // Monitor for the end of the game
         boolean gameEnd = false;
         while (!gameEnd) {
-
             synchronized (this) {
                 if (gameWon) {
                     gameEnd = true;
                 }
             }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -342,7 +343,6 @@ public class GameClass {
                 break;
             }
         }
-
         // Wait for all player threads to finish
         for (Thread thread : playerThreads) {
             try {
@@ -351,16 +351,13 @@ public class GameClass {
                 e.printStackTrace();
             }
         }
-
-        // Game has ended - declare the winner and do any necessary cleanup
-        System.out.println("Game over. Player " + winnerNumber + " wins!");
     }
 
 
-    public synchronized static void CheckWinner(int playerId) {
+    public static synchronized void CheckWinner(int playerId) {
         if (!gameWon) {
             gameWon = true;
-            Integer winnerId = playerId;
+            winnerNumber = playerId;
             System.out.println("Player " + playerId + " wins!");
 
         }

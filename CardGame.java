@@ -38,6 +38,10 @@ public class CardGame {
         //distribute the cards
         game.DistributeCards();
 
+        game.PlayGame();
+
+
+
     }
 
 }

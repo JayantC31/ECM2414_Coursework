@@ -12,8 +12,14 @@ public class Card extends Thread {
 
     }
     // used when returning the cards
-    public Integer ReturnCardFaceValue() {
 
+    public Integer ReturnCardFaceValue() {
         return CardFaceValue;
+    }
+
+    @Override
+    public String toString() {
+        // Include the card value in the string representation
+        return ""+CardFaceValue;
     }
 }
