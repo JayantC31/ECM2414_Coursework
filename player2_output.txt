@@ -1,0 +1,33 @@
+Player 2 initial hand [3, 7, 3, 2]
+ID: 2 preferred Denomination = 2
+Player 2 draws a 4 from deck 2
+Player 2 discards a 7 to deck 3
+Player 2 hand is now [3, 3, 2, 4]
+Player 2 draws a 3 from deck 2
+Player 2 discards a 3 to deck 3
+Player 2 hand is now [3, 2, 4, 3]
+Player 2 draws a 7 from deck 2
+Player 2 discards a 3 to deck 3
+Player 2 hand is now [2, 4, 3, 7]
+Player 2 draws a 6 from deck 2
+Player 2 discards a 3 to deck 3
+Player 2 hand is now [2, 4, 7, 6]
+Player 2 draws a 7 from deck 2
+Player 2 discards a 7 to deck 3
+Player 2 hand is now [2, 4, 6, 7]
+Player 2 draws a 4 from deck 2
+Player 2 discards a 6 to deck 3
+Player 2 hand is now [2, 4, 7, 4]
+Player 2 draws a 3 from deck 2
+Player 2 discards a 4 to deck 3
+Player 2 hand is now [2, 7, 4, 3]
+Player 2 draws a 6 from deck 2
+Player 2 discards a 3 to deck 3
+Player 2 hand is now [2, 7, 4, 6]
+Player 2 draws a 3 from deck 2
+Player 2 discards a 4 to deck 3
+Player 2 hand is now [2, 7, 6, 3]
+Player 2 draws a 8 from deck 2
+Player 2 discards a 6 to deck 3
+Player 2 hand is now [2, 7, 3, 8]
+leftdeck is [5, 5] rightdeck is [7, 6, 4, 3, 4, 6]

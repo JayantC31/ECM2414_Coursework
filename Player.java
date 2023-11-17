@@ -18,33 +18,47 @@ public class Player extends Thread {
     private CardDeck rightDeck;
 
     private ArrayList<Card> playerCards;
+    private final Object deckLock;
 
     public void run() {
         try (FileWriter fileWriter = new FileWriter("player" + playerID + "_output.txt")) {
             // Loop to continue the player's actions until the game is won
             fileWriter.write("Player " + playerID + " initial hand " + playerCards + "\n");
-            fileWriter.write("ID: " + playerID + " preferred Denomination = " + (playerID) + "\n");
+            fileWriter.write("ID: " + playerID + " preferred Denomination = " + playerID + "\n");
             while (!GameClass.gameWon) {
                 // 1. Draw a card from the left deck
-                Card drawnCard = leftDeck.drawCard();
-                playerCards.add(drawnCard);
-                fileWriter.write("left deck: " + leftDeck.returnCardsInDeck()   + "\n");
-                fileWriter.write("Player " + playerID + " draws a " + drawnCard.ReturnCardFaceValue() + " from deck " + leftDeck.returnCardDeckID() + "\n");
+                Card drawnCard;
+                drawnCard = leftDeck.drawCard();
+                if (drawnCard != null) {
+                    // 2. Choose a card to discard
+                    fileWriter.write("Player " + playerID + " draws a " + drawnCard.ReturnCardFaceValue() + " from deck " + leftDeck.returnCardDeckID() + "\n");
+                    Card cardToDiscard = chooseCardToDiscard();
+                    synchronized (playerCards) {
+                        synchronized (deckLock) {
+                            playerCards.add(drawnCard);
+                            // 3. Discard to the right deck
+                            if (cardToDiscard != null) {
+                                playerCards.remove(cardToDiscard);
+                                rightDeck.addCardToDeck(cardToDiscard);
+                                fileWriter.write("Player " + playerID + " discards a " + cardToDiscard.ReturnCardFaceValue() + " to deck " + rightDeck.returnCardDeckID() + "\n");
+                                fileWriter.write("Player " + playerID + " hand is now " + playerCards + "\n");
 
-                // 2. Choose a card to discard
-                Card cardToDiscard = chooseCardToDiscard();
-                playerCards.remove(cardToDiscard);
-
-                // 3. Discard to the right deck
-                rightDeck.addCardToDeck(cardToDiscard);
-                fileWriter.write("Player " + playerID + " discards a " + cardToDiscard.ReturnCardFaceValue() + " to deck " + rightDeck.returnCardDeckID() + "\n");
-                fileWriter.write("Player " + playerID + " hand is now " + playerCards + "\n");
-                // 4. Check for a winning hand
-                if (checkWinningCondition()) {
-                    GameClass.CheckWinner(playerID);
-                    fileWriter.write("Player " + playerID + " wins with hand " + handToString() + "\n");
-                    break;
+                                // 4. Check for a winning hand
+                                if (checkWinningCondition()) {
+                                    GameClass.CheckWinner(playerID);
+                                    fileWriter.write("Player " + playerID + " wins with hand " + handToString() + "\n");
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+
+            // Print the final deck after the game is won
+            synchronized (deckLock) {
+                fileWriter.write("leftdeck is " + leftDeck.returnCardsInDeck() + " rightdeck is " + rightDeck.returnCardsInDeck() + "\n");
+                rightDeck.writeDeckHand();
             }
         } catch (Exception e) {
             System.out.println("PROBLEM");
@@ -54,30 +68,35 @@ public class Player extends Thread {
 
 
 
-    public Card chooseCardToDiscard(){
-        ArrayList<Card> possibleDiscardCards = new ArrayList<>();
-        //creates an ArrayList filled with all the cards that aren't the player's preferred card
-        for (Card card : playerCards) {
-            if (!(Objects.equals(card.ReturnCardFaceValue(), playerID))) {
-                possibleDiscardCards.add(card);
-            }
+
+
+    public synchronized Card chooseCardToDiscard() {
+        ArrayList<Card> possibleDiscardCards = new ArrayList<>(playerCards);
+
+        // Remove cards that should not be discarded
+        possibleDiscardCards.removeIf(card -> Objects.equals(card.ReturnCardFaceValue(), playerID));
+
+        // Check if possibleDiscardCards is empty
+        if (possibleDiscardCards.isEmpty()) {
+            return null;
         }
-        //selects a random integer which is the index for the card that we will remove and returns the card
+
+        // Select a random card from possibleDiscardCards
         int randomIndex = random.nextInt(possibleDiscardCards.size());
-        Card cardToDiscard = possibleDiscardCards.get(randomIndex);
-        playerCards.remove(cardToDiscard);
-        return cardToDiscard;
+        return possibleDiscardCards.get(randomIndex);
     }
 
-
-
-
-
-    private boolean checkWinningCondition() {
+    private synchronized boolean checkWinningCondition() {
+        // Ensure that the player has at least one card
+        if (playerCards.isEmpty()) {
+            return false;  // Or handle this case according to your game logic
+        }
 
         int firstCardValue = playerCards.get(0).ReturnCardFaceValue();
         return playerCards.stream().allMatch(card -> card.ReturnCardFaceValue() == firstCardValue);
     }
+
+
 
     private String handToString() {
         // Convert the hand to a string representation
@@ -90,11 +109,12 @@ public class Player extends Thread {
 
 
 
-    public Player(Integer playerID, CardDeck leftDeck, ArrayList<Card> playerCards, CardDeck rightDeck) {
+    public Player(Integer playerID, CardDeck leftDeck, ArrayList<Card> playerCards, CardDeck rightDeck, Object deckLock) {
         this.playerID = playerID;
         this.leftDeck = leftDeck;
         this.playerCards = playerCards;
         this.rightDeck = rightDeck;
+        this.deckLock = deckLock;
     }
 
     public Integer returnPlayerID() {
@@ -110,7 +130,7 @@ public class Player extends Thread {
     }
 
 
-    public ArrayList<Card> returnPlayerCards() {
+    public synchronized ArrayList<Card> returnPlayerCards() {
         return playerCards;
     }
 
@@ -118,7 +138,7 @@ public class Player extends Thread {
         this.playerCards = newCards;
     }
 
-    public void addCardToPlayer(Card card) {
+    public synchronized void addCardToPlayer(Card card) {
         this.playerCards.add(card);
     }
 

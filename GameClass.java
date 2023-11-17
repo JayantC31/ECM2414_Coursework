@@ -53,7 +53,7 @@ public class GameClass {
 
     ArrayList<CardDeck> decks = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
-
+    private static final Object deckLock = new Object();
 
     //this allows pack to be returned
     public ArrayList<Card> returnPack(){
@@ -222,7 +222,7 @@ public class GameClass {
             CardDeck tempLeftDeck = new CardDeck(-1, new ArrayList<>());
             CardDeck tempRightDeck = new CardDeck(-1, new ArrayList<>());
 
-            Player player = new Player(i, tempLeftDeck, new ArrayList<>(), tempRightDeck);
+            Player player = new Player(i, tempLeftDeck, new ArrayList<>(), tempRightDeck, deckLock);
 
             players.add(player);
             playerRunnable newPlayerThread = new playerRunnable();
@@ -327,7 +327,6 @@ public class GameClass {
             playerThreads.add(thread);
             //System.out.println(thread);
         }
-
         // Monitor for the end of the game
         boolean gameEnd = false;
         while (!gameEnd) {

@@ -16,6 +16,7 @@
 
 import java.io.FileNotFoundException;
 import java.util.Scanner; // import the Scanner class
+import java.io.FileWriter;
 
 public class CardGame {
 

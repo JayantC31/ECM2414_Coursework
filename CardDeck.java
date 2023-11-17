@@ -22,7 +22,7 @@ public class CardDeck extends Thread {
         return cardDeckID;
     }
 
-    public ArrayList<Card> returnCardsInDeck() {
+    public synchronized ArrayList<Card> returnCardsInDeck() {
         return cardsInDeck;
     }
 
@@ -30,31 +30,31 @@ public class CardDeck extends Thread {
         this.cardsInDeck = newCards;
     }
 
-    public void addCardToDeck(Card card) {
+    public synchronized void addCardToDeck(Card card) {
         this.cardsInDeck.add(card);
     }
 
 
     public synchronized Card drawCard() {
         if (!cardsInDeck.isEmpty()) {
-            return cardsInDeck.remove(cardsInDeck.size() - 1); // Remove and return the top card
+            return cardsInDeck.remove(0); // Remove and return the top card
         }
         return null; // Or throw an exception if the deck is empty
     }
 
-    public void run() {
-        try (FileWriter fileWriter = new FileWriter("deck" + cardDeckID + "_output.txt")) {
-            // Loop to continue the deck's actions until the game is won
-            fileWriter.write("Deck " + cardDeckID + " initial deck " + cardsInDeck + "\n");
-            while (!GameClass.gameWon) {
-                fileWriter.write("Deck " + cardDeckID + " deck " + cardsInDeck + "\n");
-
-
-                }
-            } catch (IOException exception) {
-                System.out.println("PROBLEM for deck");
-            }
+    //writes the decks hand to an output file
+    public void writeDeckHand(){
+        try {
+            FileWriter myWriter = new FileWriter("deck" + cardDeckID + "_output.txt");
+            myWriter.write("deck" + cardDeckID + " contents: " + cardsInDeck + "\n");
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error when creating deck file");
+            e.printStackTrace();
+        }
     }
+
+
 
 
 }
