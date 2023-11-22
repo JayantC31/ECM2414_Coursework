@@ -17,7 +17,7 @@ public class GameClass {
 
     public static boolean gameWon;
 
-    /*
+    /**
      * Attributes
      */
     public GameClass(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
@@ -42,25 +42,45 @@ public class GameClass {
         return numberOfPlayers;
     }
 
-    public Integer getNumberOfDecks(){ return numberOfDecks;}
+    public Integer getNumberOfDecks(){
+        return numberOfDecks;
+    }
 
-    public void setNumberOfDecks(Integer num) { this.numberOfDecks = num;}
+    public void setNumberOfDecks(Integer num) {
+        this.numberOfDecks = num;
+    }
 
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
+
+    public void setPackLocation(String packLocation) {
+        this.packLocation = packLocation;
+    }
+
+    public String getPackLocation() {
+        return this.packLocation;
+    }
     private ArrayList<Card> pack = new ArrayList<Card>();
+
 
     ArrayList<CardDeck> decks = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
     private static final Object deckLock = new Object();
 
     //this allows pack to be returned
+
+    /**
+     *
+     * @return return the pack of cards
+     */
     public ArrayList<Card> returnPack(){
         return pack;
     }
-    /*
+
+    /**
      * In this method, we will check for what the user will input in the terminal
+     *
      */
     public void UserInputs() {
         System.out.println("UserInput test");
@@ -88,6 +108,7 @@ public class GameClass {
                 // check for any exceptions for the integer
             }
         }
+
         System.out.println("Please enter location of pack to be loaded: ");
         boolean CardValidity = false;
         String CardLocationString = null;
@@ -106,10 +127,14 @@ public class GameClass {
     // stop the user from inputting into the terminal to allow game to start checking packs and users
     UserInput.close();
     packLocation = CardLocationString;
+
+
     }
 
-    /*
+    /**
      * This is to check if the pack is valid
+     * @param packLocation
+     * @return  returns the file of the deck
      */
     public boolean validatePack(String packLocation){
 
@@ -157,8 +182,9 @@ public class GameClass {
     return validityOfPack;
     }
 
-    /*
+    /**
      * This is to start the game by creating the cards
+     * @throws FileNotFoundException
      */
     public void createCards() throws FileNotFoundException {
         // For this to work the game needs the cards to be created
@@ -182,9 +208,7 @@ public class GameClass {
     }
 
 
-
-
-    /*
+    /**
      * This is to create the decks used to play the cards
      */
     public void createDecks() {
@@ -206,10 +230,12 @@ public class GameClass {
         }
     }
 
-    /*
+    /**
      * This is to create the players for the game
+     *
+     * @return
      */
-    public void createPlayers() {
+    public int createPlayers() {
         // The amount of players has already been checked and is confirmed
         System.out.println("Number of players: " + getNumberOfPlayers());
         // Create 4 empty Players
@@ -237,11 +263,13 @@ public class GameClass {
             //System.out.println("Deck created with id " + player.returnPlayerID());
         }
 
+        return numberOfPlayers;
     }
 
 
-    /*
-     * This is to distribute the cards, to each deck and player
+    /**
+     *
+     *  This is to distribute the cards, to each deck and player
      */
     public void DistributeCards() {
         int numPlayers = players.size();
@@ -317,7 +345,9 @@ public class GameClass {
         }
     }
 
-
+    /**
+     * 
+     */
     public synchronized void PlayGame() {
         // Start player threads
         List<Thread> playerThreads = new ArrayList<>();
@@ -363,6 +393,12 @@ public class GameClass {
     }
 
 
+
+
+    /**
+     * To check if the game have a winner
+     * @param playerId
+     */
 
 
 

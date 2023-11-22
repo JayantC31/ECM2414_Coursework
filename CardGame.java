@@ -1,5 +1,5 @@
 
-/*
+/**
  * Card Game Class - Executable
  * @author Jayant Chawla and Pui Kin Chan
  *
@@ -20,8 +20,12 @@ import java.io.FileWriter;
 
 public class CardGame {
 
-
+    /**
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
+        //Scanner scanner = new Scanner(System.in);
         GameClass game = new GameClass();
 
         //this will be used to get the user inputs in order to start the game
@@ -46,6 +50,10 @@ public class CardGame {
     }
 
 }
+
+/**
+ * Runnable class to get cards for multithreading.
+ */
 class cardRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
@@ -59,6 +67,9 @@ class cardRunnable implements Runnable {
     }
 }
 
+/**
+ * Runnable class to get decks for multithreading.
+ */
 class deckRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
@@ -72,6 +83,10 @@ class deckRunnable implements Runnable {
     }
 }
 
+
+/**
+ * Runnable class to get players for multithreading.
+ */
 class playerRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
