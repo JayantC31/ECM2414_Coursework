@@ -121,9 +121,7 @@ public class Player extends Thread {
         return playerID;
     }
 
-    public CardDeck returnLeftDeck() {
-        return leftDeck;
-    }
+    public CardDeck returnLeftDeck() {return leftDeck;}
 
     public CardDeck returnRightDeck() {
         return rightDeck;
@@ -143,9 +141,7 @@ public class Player extends Thread {
     }
 
 
-    public void setLeftDeck(CardDeck cardDeck) {
-        this.leftDeck = cardDeck;
-    }
+    public void setLeftDeck(CardDeck cardDeck) {this.leftDeck = cardDeck;}
 
     public void setRightDeck(CardDeck cardDeck) {
         this.rightDeck = cardDeck;

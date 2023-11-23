@@ -36,7 +36,7 @@ public class GameClass {
     //this is a check to see whether the game has ended or not
     //private Boolean gameWon = false;
     //this is the number of the player who has won
-    private static Integer winnerNumber;
+    public static Integer winnerNumber;
 
     public Integer getNumberOfPlayers(){
         return numberOfPlayers;
