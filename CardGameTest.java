@@ -34,7 +34,7 @@ class CardGameTest {
     }
 
     @Test
-    void UserInputsANDPackLocationTest() {
+    public void UserInputsANDPackLocationTest() {
         String simulatedInput = "4\n" + // Simulated input for number of players
                 "test.txt\n"; // Simulated input for pack location
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
