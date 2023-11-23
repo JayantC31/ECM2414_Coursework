@@ -99,6 +99,29 @@ class CardGameTest {
         // Assert that the deck ID is as expected
         assertEquals(4, cardDeck.returnCardDeckID());
     }
+    @Test
+    public void testDeckRunnable() {
+        // Create an instance of deckRunnable
+        deckRunnable deckRunnable = new deckRunnable();
+
+        // Run the deckRunnable in a new thread
+        Thread thread = new Thread(deckRunnable);
+        thread.start();
+
+        // Let the thread run for some time (adjust this based on the expected sleep time)
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Optionally, you can check some observable effects or states influenced by the run method
+        // For example, you might have a boolean flag that is set during the run method
+        // assertTrue(deckRunnable.isSomeFlagSet());
+
+        // Ensure that the thread has finished its execution
+        assertFalse(thread.isAlive());
+    }
 
 
 }
