@@ -1,9 +1,13 @@
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.Test;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CardGameTest {
+public class CardGameTest {
     // create an input stream when testing
     private final InputStream originalSystemIn = System.in;
     private Game game;
@@ -15,7 +19,7 @@ class CardGameTest {
 
     //make sure the players are tested for by checking ID
     @Test
-    void PlayerTest() {
+    public void PlayerTest() {
         var game = new Game();
         game.setNumberOfPlayers(4);
         //game.createPlayers(); // Create players
@@ -23,23 +27,14 @@ class CardGameTest {
     }
 
     @AfterEach
-    void restoreSystemIn() {
+    public void restoreSystemIn() {
         System.setIn(originalSystemIn);
     }
 
-    @Test
-    public void UserInputsANDPackLocationTest() {
-        String simulatedInput = "4\n" + // input for number of players
-                "test.txt\n"; // input for the pack location
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        game.UserInputs();
-
-        assertEquals("test.txt", game.getPackLocation());
-    }
 
     @Test
-    void testDeckSize() {
+    public void testDeckSize() {
         // create a new deck and add cards given its ID
         var cardDeck = new CardDeck(4, new ArrayList<>());
 
@@ -59,7 +54,7 @@ class CardGameTest {
 
 
    @Test
-    void PackLocationTest(){
+   public void PackLocationTest(){
         var gameClass = new Game();
         gameClass.setPackLocation("test.txt");
         // check if location has been found and is correct
@@ -69,7 +64,7 @@ class CardGameTest {
 
 
     @Test
-    void testDeckID() {
+    public void testDeckID() {
         // create a new CardDeck using an ID and an empty list of cards
         var cardDeck = new CardDeck(4, new ArrayList<>());
 

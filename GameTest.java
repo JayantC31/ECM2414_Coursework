@@ -1,12 +1,12 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameTest {
+public class GameTest {
     // create stream for inputs used for game
     private final InputStream originalSystemIn = System.in;
 
@@ -76,8 +76,9 @@ class GameTest {
     public void testUserInputsValid() {
         Game game = new Game();
         // assume 4 players for test
-        String[] input = {"4", "test.txt"};
-        Scanner userInputMock = new Scanner(Arrays.toString(input));
+        String simulatedInput = "4\n" + // simulated input for number of players
+                "test.txt\n"; // simulated input for pack location
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
         game.UserInputs();
         //test for both user inputs
         assertEquals(Integer.valueOf(4), game.getNumberOfPlayers());
@@ -86,7 +87,7 @@ class GameTest {
 
 
     @Test
-    void createCardsTest() throws FileNotFoundException {
+    public void createCardsTest() throws FileNotFoundException {
         // set pack location
         Game game = new Game();
         game.setPackLocation("test.txt"); // ensure this is the correct path to your test file
@@ -132,7 +133,7 @@ class GameTest {
 
 
     @Test
-    void checkWinnerTest() {
+    public void checkWinnerTest() {
         // create an instance of GameClass
         Game game = new Game();
 

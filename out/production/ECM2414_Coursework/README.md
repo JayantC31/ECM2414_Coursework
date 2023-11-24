@@ -4,7 +4,7 @@ Coursework for ECM2414 - Software Development
 
 Files required to play Game - 
 CardGame.java - Executable File
-GameClass.java 
+Game.java 
 Player.java
 CardDeck.java
 Card.java
