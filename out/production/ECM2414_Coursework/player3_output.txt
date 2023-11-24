@@ -1,0 +1,33 @@
+Player 3 initial hand [Thread[#35,Thread-2,5,main], Thread[#43,Thread-6,5,main], Thread[#51,Thread-10,5,main], Thread[#59,Thread-14,5,main]]
+ID: 3 preferred Denomination = 3
+Player 3 draws a 2 from deck 3
+Player 3 discards a 2 to deck 4
+Player 3 hand is now [Thread[#35,Thread-2,5,main], Thread[#51,Thread-10,5,main], Thread[#59,Thread-14,5,main], Thread[#67,Thread-18,5,main]]
+Player 3 draws a 4 from deck 3
+Player 3 discards a 4 to deck 4
+Player 3 hand is now [Thread[#51,Thread-10,5,main], Thread[#59,Thread-14,5,main], Thread[#67,Thread-18,5,main], Thread[#75,Thread-22,5,main]]
+Player 3 draws a 3 from deck 3
+Player 3 discards a 4 to deck 4
+Player 3 hand is now [Thread[#51,Thread-10,5,main], Thread[#67,Thread-18,5,main], Thread[#75,Thread-22,5,main], Thread[#83,Thread-26,5,main]]
+Player 3 draws a 1 from deck 3
+Player 3 discards a 5 to deck 4
+Player 3 hand is now [Thread[#67,Thread-18,5,main], Thread[#75,Thread-22,5,main], Thread[#83,Thread-26,5,main], Thread[#91,Thread-30,5,main]]
+Player 3 draws a 3 from deck 3
+Player 3 discards a 1 to deck 4
+Player 3 hand is now [Thread[#67,Thread-18,5,main], Thread[#75,Thread-22,5,main], Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main]]
+Player 3 draws a 7 from deck 3
+Player 3 discards a 2 to deck 4
+Player 3 hand is now [Thread[#75,Thread-22,5,main], Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main], Thread[#41,Thread-5,5,main]]
+Player 3 draws a 3 from deck 3
+Player 3 discards a 7 to deck 4
+Player 3 hand is now [Thread[#75,Thread-22,5,main], Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main], Thread[#33,Thread-1,5,main]]
+Player 3 draws a 4 from deck 3
+Player 3 discards a 4 to deck 4
+Player 3 hand is now [Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main], Thread[#33,Thread-1,5,main], Thread[#65,Thread-17,5,main]]
+Player 3 draws a 6 from deck 3
+Player 3 discards a 4 to deck 4
+Player 3 hand is now [Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main], Thread[#33,Thread-1,5,main], Thread[#89,Thread-29,5,main]]
+Player 3 draws a 7 from deck 3
+Player 3 discards a 6 to deck 4
+Player 3 hand is now [Thread[#83,Thread-26,5,main], Thread[#49,Thread-9,5,main], Thread[#33,Thread-1,5,main], Thread[#81,Thread-25,5,main]]
+leftdeck is [Thread[#55,Thread-12,5,main], Thread[#47,Thread-8,5,main], Thread[#71,Thread-20,5,main], Thread[#73,Thread-21,5,main], Thread[#79,Thread-24,5,main], Thread[#63,Thread-16,5,main], Thread[#61,Thread-15,5,main], Thread[#45,Thread-7,5,main]] rightdeck is [Thread[#89,Thread-29,5,main]]
