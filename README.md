@@ -10,5 +10,7 @@ CardDeck.java
 Card.java
 
 Testing - 
-Junit 5
+Use of JUnit 5
+Can be run using: " java -jar cards.jar " 
+on terminal inside file location of jar
 
