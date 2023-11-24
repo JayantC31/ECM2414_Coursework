@@ -4,9 +4,7 @@
  * */
 
 
-import java.awt.print.PrinterGraphics;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -25,7 +23,7 @@ public class Player extends Thread {
             // loop to continue the player's actions until the game is won
             fileWriter.write("Player " + playerID + " initial hand " + playerCards + "\n");
             fileWriter.write("ID: " + playerID + " preferred Denomination = " + playerID + "\n");
-            while (!GameClass.gameWon) {
+            while (!Game.gameWon) {
                 synchronized (playerCards) {
                     synchronized (deckLock) {
                         // draw a card from the left deck
@@ -45,7 +43,7 @@ public class Player extends Thread {
 
                                         // check if the hand can win
                                         if (checkWinningCondition()) {
-                                            GameClass.CheckWinner(playerID);
+                                            Game.CheckWinner(playerID);
                                             fileWriter.write("Player " + playerID + " wins with hand " + handToString() + "\n");
                                             break;
                                 }

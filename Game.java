@@ -10,14 +10,14 @@ import java.util.Scanner;
  * */
 
 
-public class GameClass {
+public class Game {
     // boolean to check if game is over
     public static boolean gameWon;
 
     /*
      * Attributes
      */
-    public GameClass(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
+    public Game(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
 
     //this is the number of players in game
     private int numberOfPlayers;

@@ -6,17 +6,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardGameTest {
     // create an input stream when testing
     private final InputStream originalSystemIn = System.in;
-    private GameClass gameClass;
+    private Game game;
     // start the game
     @BeforeEach
     void setUp() {
-        gameClass = new GameClass();
+        game = new Game();
     }
 
     //make sure the players are tested for by checking ID
     @Test
     void PlayerTest() {
-        var game = new GameClass();
+        var game = new Game();
         game.setNumberOfPlayers(4);
         //game.createPlayers(); // Create players
         assertEquals(4, game.getNumberOfPlayers());
@@ -33,9 +33,9 @@ class CardGameTest {
                 "test.txt\n"; // input for the pack location
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        gameClass.UserInputs();
+        game.UserInputs();
 
-        assertEquals("test.txt", gameClass.getPackLocation());
+        assertEquals("test.txt", game.getPackLocation());
     }
 
     @Test
@@ -60,7 +60,7 @@ class CardGameTest {
 
    @Test
     void PackLocationTest(){
-        var gameClass = new GameClass();
+        var gameClass = new Game();
         gameClass.setPackLocation("test.txt");
         // check if location has been found and is correct
         assertEquals("test.txt", gameClass.getPackLocation());

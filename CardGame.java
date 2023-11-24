@@ -5,8 +5,7 @@
  * */
 
 import java.io.FileNotFoundException;
-import java.util.Scanner; // import the Scanner class
-import java.io.FileWriter;
+
 
 public class CardGame {
 
@@ -16,7 +15,7 @@ public class CardGame {
      */
     public static void main(String[] args) throws FileNotFoundException {
         // Start the game
-        GameClass game = new GameClass();
+        Game game = new Game();
 
         //this will be used to get the user inputs in order to start the game
         game.UserInputs();

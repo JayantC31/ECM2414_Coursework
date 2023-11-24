@@ -2,12 +2,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameClassTest {
+class GameTest {
     // create stream for inputs used for game
     private final InputStream originalSystemIn = System.in;
 
@@ -15,7 +14,7 @@ class GameClassTest {
     @BeforeEach
     protected void setUp() {
         // create a new game to test with 4 people and test pack
-        GameClass game = new GameClass();
+        Game game = new Game();
         game.setNumberOfPlayers(4);
         String simulatedInput = "4\n" + // Simulated input for number of players
                 "test.txt\n"; // Simulated input for pack location
@@ -30,7 +29,7 @@ class GameClassTest {
 
     @Test
     public void UserInputsANDPackLocationTest() {
-        GameClass game = new GameClass();
+        Game game = new Game();
         String simulatedInput = "4\n" + // simulated input for number of players
                 "test.txt\n"; // simulated input for pack location
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
@@ -42,7 +41,7 @@ class GameClassTest {
 
     @Test
     public void testSetNumberOfPlayers() {
-        GameClass game = new GameClass();
+        Game game = new Game();
         // set the number of players
         game.setNumberOfPlayers(4);
         // get the number of players
@@ -52,7 +51,7 @@ class GameClassTest {
 
     @Test
     public void testValidatePackValid() {
-        GameClass game = new GameClass();
+        Game game = new Game();
         game.setNumberOfPlayers(4);
         // test that pack is valid
         assertTrue(game.validatePack("test.txt"));
@@ -60,7 +59,7 @@ class GameClassTest {
 
     @Test
     public void testValidatePackInvalid() {
-        GameClass game = new GameClass();
+        Game game = new Game();
         String packtest = "test.txt";
         String packtest2 = "test2";
         String packtest3 = "test3.txt";
@@ -75,7 +74,7 @@ class GameClassTest {
 
     @Test
     public void testUserInputsValid() {
-        GameClass game = new GameClass();
+        Game game = new Game();
         // assume 4 players for test
         String[] input = {"4", "test.txt"};
         Scanner userInputMock = new Scanner(Arrays.toString(input));
@@ -89,7 +88,7 @@ class GameClassTest {
     @Test
     void createCardsTest() throws FileNotFoundException {
         // set pack location
-        GameClass game = new GameClass();
+        Game game = new Game();
         game.setPackLocation("test.txt"); // ensure this is the correct path to your test file
         // create cards
         game.createCards();
@@ -102,7 +101,7 @@ class GameClassTest {
     @Test
     public void createDeckTest()  {
         // create the card deck
-        GameClass game = new GameClass();
+        Game game = new Game();
         game.setNumberOfDecks(4);
         assertEquals(4, game.getNumberOfDecks());
 
@@ -111,7 +110,7 @@ class GameClassTest {
     @Test
     public void PlayersTest() {
         // create the player tests
-        GameClass game = new GameClass();
+        Game game = new Game();
         // Set the number of players using a public method
         game.setNumberOfPlayers(4);
         assertEquals(4, game.getNumberOfPlayers());
@@ -119,7 +118,7 @@ class GameClassTest {
 
     @Test
     public void DistributeCardsTest() throws FileNotFoundException {
-        GameClass game = new GameClass();
+        Game game = new Game();
         game.setNumberOfPlayers(4);
         game.setNumberOfDecks(4);
         // find the actual left deck
@@ -135,19 +134,19 @@ class GameClassTest {
     @Test
     void checkWinnerTest() {
         // create an instance of GameClass
-        GameClass game = new GameClass();
+        Game game = new Game();
 
         // set the number of players
         game.setNumberOfPlayers(4);
 
         // check for winner assuming player ID 2 has won
         int winningPlayerId = 2;
-        GameClass.CheckWinner(winningPlayerId);
+        Game.CheckWinner(winningPlayerId);
 
         // assert that the game is marked as won
-        assertTrue(GameClass.gameWon);
+        assertTrue(Game.gameWon);
 
         // assert that the winner number is set correctly
-        assertEquals(Integer.valueOf(winningPlayerId), GameClass.winnerNumber);
+        assertEquals(Integer.valueOf(winningPlayerId), Game.winnerNumber);
     }
 }
