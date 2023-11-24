@@ -1,0 +1,9 @@
+Player 7 initial hand [2, 4, 4, 1]
+ID: 7 preferred Denomination = 7
+Player 7 draws a 2 from deck 7
+Player 7 discards a 4 to deck 8
+Player 7 hand is now [2, 4, 1, 2]
+Player 7 draws a 4 from deck 7
+Player 7 discards a 4 to deck 8
+Player 7 hand is now [2, 1, 2, 4]
+leftdeck is [4, 1, 2, 7, 3, 2] rightdeck is [3, 3, 4, 4]

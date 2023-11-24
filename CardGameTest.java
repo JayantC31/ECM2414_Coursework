@@ -1,31 +1,25 @@
 import org.junit.jupiter.api.*;
-
-
 import java.io.*;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardGameTest {
-
-    /*@Test
-    void PlayerTest() {
-
-        var game = new GameClass();
-        game.setNumberOfPlayers(4);
-        //game.createPlayers(); // Create players
-
-        assertEquals(4, game.getNumberOfPlayers());
-    }
-`
-     */
-
+    // create an input stream when testing
     private final InputStream originalSystemIn = System.in;
     private GameClass gameClass;
-
+    // start the game
     @BeforeEach
     void setUp() {
         gameClass = new GameClass();
+    }
+
+    //make sure the players are tested for by checking ID
+    @Test
+    void PlayerTest() {
+        var game = new GameClass();
+        game.setNumberOfPlayers(4);
+        //game.createPlayers(); // Create players
+        assertEquals(4, game.getNumberOfPlayers());
     }
 
     @AfterEach
@@ -35,8 +29,8 @@ class CardGameTest {
 
     @Test
     public void UserInputsANDPackLocationTest() {
-        String simulatedInput = "4\n" + // Simulated input for number of players
-                "test.txt\n"; // Simulated input for pack location
+        String simulatedInput = "4\n" + // input for number of players
+                "test.txt\n"; // input for the pack location
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         gameClass.UserInputs();
@@ -46,11 +40,11 @@ class CardGameTest {
 
     @Test
     void testDeckSize() {
-        // Create a new CardDeck with an ID and an empty list of cards
+        // create a new deck and add cards given its ID
         var cardDeck = new CardDeck(4, new ArrayList<>());
 
         // Add some cards to the deck
-        cardDeck.addCardToDeck(new Card(1)); // Assuming Card constructor takes an integer
+        cardDeck.addCardToDeck(new Card(1)); // add integer values to the cards
         cardDeck.addCardToDeck(new Card(2));
         cardDeck.addCardToDeck(new Card(3));
         cardDeck.addCardToDeck(new Card(4));
@@ -59,69 +53,81 @@ class CardGameTest {
         cardDeck.addCardToDeck(new Card(7));
         cardDeck.addCardToDeck(new Card(8));
 
-        // Assert that the size of the deck is as expected
+        // check that deck size is as expected
         assertEquals(8, cardDeck.returnCardsInDeck().size());
     }
 
-    /*
-    @Test
-    void testCorrectLocationInput() {
-        // Simulate user input
-        String simulatedInput = "test.txt\n";
-        ByteArrayInputStream testIn = new ByteArrayInputStream(simulatedInput.getBytes());
-        System.setIn(testIn);
 
-        // Call the method under test
-        gameClass.UserInputs();
-
-        // Assert that the location is set correctly
-        assertEquals("test.txt", gameClass.getPackLocation());
-    }
-
-     */
-   /* @Test
+   @Test
     void PackLocationTest(){
         var gameClass = new GameClass();
         gameClass.setPackLocation("test.txt");
-
+        // check if location has been found and is correct
         assertEquals("test.txt", gameClass.getPackLocation());
     }
 
-
-    */
 
 
     @Test
     void testDeckID() {
-        // Create a new CardDeck with an ID and an empty list of cards
+        // create a new CardDeck using an ID and an empty list of cards
         var cardDeck = new CardDeck(4, new ArrayList<>());
 
-        // Assert that the deck ID is as expected
+        // check that ID is same as created
         assertEquals(4, cardDeck.returnCardDeckID());
     }
     @Test
     public void testDeckRunnable() {
-        // Create an instance of deckRunnable
-        deckRunnable deckRunnable = new deckRunnable();
+        // make an instance of deckRunnable
+        deckRunnable deckRunnableTest = new deckRunnable();
 
-        // Run the deckRunnable in a new thread
-        Thread thread = new Thread(deckRunnable);
+        // run the deckRunnable with a new thread
+        Thread thread = new Thread(deckRunnableTest);
         thread.start();
 
-        // Let the thread run for some time (adjust this based on the expected sleep time)
+        // let the thread run for 3 seconds
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Optionally, you can check some observable effects or states influenced by the run method
-        // For example, you might have a boolean flag that is set during the run method
-        // assertTrue(deckRunnable.isSomeFlagSet());
-
-        // Ensure that the thread has finished its execution
+        // check if thread is alive
         assertFalse(thread.isAlive());
     }
+    @Test
+    public void testPlayerRunnable() {
+        // create an instance of player runnable
+        playerRunnable playerRunnableTest = new playerRunnable();
 
+        // run the runnable in a new thread
+        Thread thread = new Thread(playerRunnableTest);
+        thread.start();
 
+        // let the thread run for 3 seconds
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // check if thread is alive
+        assertFalse(thread.isAlive());
+    }
+    @Test
+    public void testCardRunnable() {
+        // create an instance of the card runnable
+        cardRunnable CardRunnableTest = new cardRunnable();
+
+        // run the card runnable in new thread
+        Thread thread = new Thread(CardRunnableTest);
+        thread.start();
+
+        // let the thread run for 3 seconds
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // check if thread is alive
+        assertFalse(thread.isAlive());
+    }
 }

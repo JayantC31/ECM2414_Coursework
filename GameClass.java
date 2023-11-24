@@ -2,42 +2,37 @@ import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Scanner; // import the Scanner class
+import java.util.Scanner;
 
-/*
+/**
  * Game Class - Class for the Game
  * @author Jayant Chawla and Pui Kin Chan
  * */
 
 
-
-
-
 public class GameClass {
-
+    // boolean to check if game is over
     public static boolean gameWon;
 
-    /**
+    /*
      * Attributes
      */
     public GameClass(){ /* Nothing needed in this to instantiate, will be used in the executable class to start the game */ }
 
-    //this contains all players and creates a new player
-    //private ArrayList<Player> players = new ArrayList<Player>();
-    //this holds all the decks with a new deck for every two players
-    //private ArrayList<CardDeck> decks = new ArrayList<CardDeck>();
-    //holds all the cards used in the game
-
+    //this is the number of players in game
     private int numberOfPlayers;
-    //this string is the location of the pack
 
+    //this is the number of decks used in the game
     private int numberOfDecks;
+    //this string is the location of the pack
     private String packLocation;
-    //this is a check to see whether the game has ended or not
-    //private Boolean gameWon = false;
+
+
     //this is the number of the player who has won
     public static Integer winnerNumber;
 
+
+    // These are the Methods used to return each variable that we are holding that could be useful in the game or to test
     public Integer getNumberOfPlayers(){
         return numberOfPlayers;
     }
@@ -61,34 +56,37 @@ public class GameClass {
     public String getPackLocation() {
         return this.packLocation;
     }
+
+
+    // This is the arrays that are used to store the cards and then store in a pack
     private ArrayList<Card> pack = new ArrayList<Card>();
 
-
+    // This is the arrays that are used to store the decks
     ArrayList<CardDeck> decks = new ArrayList<>();
+
+    // This is the arrays that are used to store the players
     ArrayList<Player> players = new ArrayList<>();
+
+    // This allows the deck to be locked and created
     private static final Object deckLock = new Object();
 
-    //this allows pack to be returned
 
-    /**
-     *
-     * @return return the pack of cards
-     */
+    // return the packs to the user
     public ArrayList<Card> returnPack(){
         return pack;
     }
 
     /**
      * In this method, we will check for what the user will input in the terminal
-     *
      */
     public void UserInputs() {
         System.out.println("UserInput test");
-        // Allow user to input variables needed for game
+        // allow user to input variables needed for game
         Scanner UserInput = new Scanner(System.in);
         // this boolean allows us to check whether player count is allowed for game to continue
         boolean NumOfPlayersValidity = false;
         System.out.println("Please enter the number of players: ");
+        // while loop to check for the variables
         while (!NumOfPlayersValidity) {
             try {
                 String PlayerCountInputString = UserInput.nextLine();
@@ -97,7 +95,7 @@ public class GameClass {
                 System.out.println("Username is: " + PlayerCountInput);
                 if (PlayerCountInput <= 1) {
                     System.out.println("Please enter non negative number that is able to play the game: ");
-                    // Don't allow game to start if user count is less then 2
+                    // don't allow game to start if user count is less then 2
                 } else {
                     numberOfPlayers = PlayerCountInput;
                     NumOfPlayersValidity = true;
@@ -128,7 +126,6 @@ public class GameClass {
     UserInput.close();
     packLocation = CardLocationString;
 
-
     }
 
     /**
@@ -137,7 +134,7 @@ public class GameClass {
      * @return  returns the file of the deck
      */
     public boolean validatePack(String packLocation){
-
+        // use boolean to check if pack is valid or not
         boolean validityOfPack = false;
         try {
             // try to open the file
@@ -159,19 +156,16 @@ public class GameClass {
             }
             try {
                 Integer TotalLineCount = LineCounter;
-                // To test: System.out.println("Total line count: " + TotalLineCount + " / num of players: " + getNumberOfPlayers());
                 // this is to test the total count of the lines used in the file given
                 if (TotalLineCount / getNumberOfPlayers() != 8) {
                     validityOfPack = false;
                     System.out.println("The pack is not valid: total count of values in list must be 8n");
-                    System.exit(0);
                 } else {
                     validityOfPack = true;
                     System.out.println("Pack is valid");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Pack not valid");
-                System.exit(0);
                 // catch any exceptions if any problems when pack is located
             }
         } catch (FileNotFoundException e) {
@@ -204,7 +198,6 @@ public class GameClass {
 
         }
         PackScan.close();
-        //System.out.println(returnPack());
     }
 
 
@@ -215,25 +208,21 @@ public class GameClass {
         // The amount of players has already been checked and is confirmed
         setNumberOfDecks(getNumberOfPlayers());
         System.out.println("Number of decks: " + getNumberOfDecks());
-        //System.out.println(pack);
         // Create 4 empty CardDecks
         for (int i = 1; i <= getNumberOfDecks(); i++) {
             CardDeck cardDeck = new CardDeck(i, new ArrayList<>());
-
+            // create the decks and add to the array
             decks.add(cardDeck);
             deckRunnable newDeckThread = new deckRunnable();
             Thread DeckThread = new Thread(newDeckThread , String.valueOf(cardDeck.returnCardDeckID()));
             DeckThread.start ();
         }
-        for (CardDeck cardDeck : decks) {
-            //System.out.println("Deck created with id " + cardDeck.returnCardDeckID());
-        }
+
     }
 
     /**
      * This is to create the players for the game
-     *
-     * @return
+     * @return number of players
      */
     public int createPlayers() {
         // The amount of players has already been checked and is confirmed
@@ -241,26 +230,18 @@ public class GameClass {
         // Create 4 empty Players
         int numberOfPlayers = getNumberOfPlayers();
         int totalPlayers = decks.size();
-
-
         for (int i = 1; i <= numberOfPlayers; i++) {
             // Create CardDeck with the current player ID
             CardDeck tempLeftDeck = new CardDeck(-1, new ArrayList<>());
             CardDeck tempRightDeck = new CardDeck(-1, new ArrayList<>());
-
+            // create temp decks to connnect to player as they do not have cards yet
             Player player = new Player(i, tempLeftDeck, new ArrayList<>(), tempRightDeck, deckLock);
-
             players.add(player);
             playerRunnable newPlayerThread = new playerRunnable();
-
+            // create the threads
             Thread PlayerThread = new Thread(newPlayerThread , String.valueOf(player.returnPlayerID()));
-            //System.out.println(PlayerThread);
             PlayerThread.start ();
 
-        }
-
-        for (Player player : players) {
-            //System.out.println("Deck created with id " + player.returnPlayerID());
         }
 
         return numberOfPlayers;
@@ -268,7 +249,6 @@ public class GameClass {
 
 
     /**
-     *
      *  This is to distribute the cards, to each deck and player
      */
     public void DistributeCards() {
@@ -277,37 +257,28 @@ public class GameClass {
         for (int i = 0; i < pack.size() / 2; i++) {
             Card card = pack.get(i);
             Player player = players.get(playerIndex);
-            // Add the card to the current CardDeck
+            // add the card to the current deck
             player.addCardToPlayer(card);
-            // Move to the next deck in a round-robin fashion
+            // go to the next deck in a round-robin fashion
             playerIndex = (playerIndex + 1) % numPlayers;
-        }
-        // Print the results for each CardDeck after decks are filled
-        for (Player player : players) {
-            //System.out.println("Player ID: " + player.returnPlayerID());
-            //System.out.print("Cards in Player: ");
-            for (Card cardInDeck : player.returnPlayerCards()) {
-                //System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
-            }
-            //System.out.println();
         }
         int numDecks = decks.size();
         int deckIndex = 0;
-        // Iterate through the cards
+        // iterate through the cards
         for (int i = pack.size() / 2; i < pack.size(); i++) {
             Card card = pack.get(i);
-            // Find the CardDeck with the current index
+            // find the deck with the current index
             CardDeck cardDeck = decks.get(deckIndex);
-            // Add the card to the current CardDeck
+            // add the card to the current deck
             cardDeck.addCardToDeck(card);
-            // Move to the next deck in a round-robin fashion
+            // go to the next deck in a round-robin way
             deckIndex = (deckIndex + 1) % numDecks;
         }
         for (int i = 0; i < numberOfPlayers; i++) {
-            // Determine the actual decks based on player's ID
+            // find the actual decks based on player's ID
             int leftDeckId = i + 1;
             int rightDeckId = (i == numberOfPlayers - 1) ? 1 : i + 2;
-            // Find the actual left deck
+            // get the actual left deck
             CardDeck leftDeck = null;
             for (CardDeck deck : decks) {
                 if (deck.returnCardDeckID() == leftDeckId) {
@@ -315,7 +286,7 @@ public class GameClass {
                     break;
                 }
             }
-            // Find the actual right deck
+            // find the actual right deck
             CardDeck rightDeck = null;
             for (CardDeck deck : decks) {
                 if (deck.returnCardDeckID() == rightDeckId) {
@@ -323,17 +294,16 @@ public class GameClass {
                     break;
                 }
             }
-            // Update the player with the actual decks
+            // update the player with the actual decks
             Player player = players.get(i);
             player.setLeftDeck(leftDeck);
             player.setRightDeck(rightDeck);
-            // Print player information
+            // print player information
             System.out.print("Player " + player.returnPlayerID() + " has Deck: ");
             for (Card cardInDeck : player.returnPlayerCards()) {
                 System.out.print(cardInDeck.ReturnCardFaceValue() + " ");
             }
             System.out.println();
-            //System.out.println(" Left Deck: " + player.returnLeftDeck().returnCardDeckID() + " Right Deck: " + player.returnRightDeck().returnCardDeckID());
         }
         // Print the results for each CardDeck after decks are filled
         for (CardDeck cardDeck : decks) {
@@ -346,18 +316,17 @@ public class GameClass {
     }
 
     /**
-     * 
+     * This is to start the game and all variables necessary
      */
     public synchronized void PlayGame() {
-        // Start player threads
+        // start the player threads
         List<Thread> playerThreads = new ArrayList<>();
         for (Player player : players) {
             Thread thread = new Thread(player);
-            thread.start(); // Start the player thread
+            thread.start(); // start the threads
             playerThreads.add(thread);
-            //System.out.println(thread);
         }
-        // Monitor for the end of the game
+        // monitor for the end of the game
         boolean gameEnd = false;
         while (!gameEnd) {
             synchronized (this) {
@@ -366,63 +335,35 @@ public class GameClass {
                 }
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(2000); // check if game is won after every 2 seconds
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
             }
         }
-        // Wait for all player threads to finish
+        // wait for all player threads to finish
         for (Thread thread : playerThreads) {
             try {
-                thread.join(); // Wait for the thread to terminate
+                thread.join(); // wait for the thread to terminate
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-
+    /**
+     * This is to end the game and all variables necessary and all checking for a winner
+     * @param playerId - check for the ID of player
+     */
     public static synchronized void CheckWinner(int playerId) {
         if (!gameWon) {
             gameWon = true;
+            // if game has been won then get the player ID and print it out
             winnerNumber = playerId;
             System.out.println("Player " + playerId + " wins!");
 
         }
     }
-
-
-
-
-    /**
-     * To check if the game have a winner
-     * @param playerId
-     */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

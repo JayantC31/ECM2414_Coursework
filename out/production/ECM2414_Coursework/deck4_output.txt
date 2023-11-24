@@ -1,1 +1,1 @@
-deck4 contents: [Thread[#89,Thread-29,5,main]]
+deck4 contents: [4, 7, 7]

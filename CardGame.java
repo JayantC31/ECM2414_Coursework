@@ -1,18 +1,8 @@
-
 /**
  * Card Game Class - Executable
  * @author Jayant Chawla and Pui Kin Chan
  *
- * FOR TESTING:
- * CARDGAME FILE - EXECUTABLE
- * game file - for game
- * CARD FILE - THREAD SAFE
- * PLAYER FILE - THREAD SAFE
- * CARDDECK FILE
- *
- *
  * */
-
 
 import java.io.FileNotFoundException;
 import java.util.Scanner; // import the Scanner class
@@ -21,34 +11,32 @@ import java.io.FileWriter;
 public class CardGame {
 
     /**
-     * @param args
-     * @throws FileNotFoundException
+     * @param args - used to start the game and make a new argument for the program
+     * @throws FileNotFoundException - checks if file user inputs is found
      */
     public static void main(String[] args) throws FileNotFoundException {
-        //Scanner scanner = new Scanner(System.in);
+        // Start the game
         GameClass game = new GameClass();
 
         //this will be used to get the user inputs in order to start the game
         game.UserInputs();
 
-        //create the cards
+        //create the cards for the game
         game.createCards();
 
-        //create the decks
+        //create the decks to store cards
         game.createDecks();
 
-        //create the players
+        //create the players needed for the game
         game.createPlayers();
 
-        //distribute the cards
+        //distribute the cards, in even fashion to player and deck
         game.DistributeCards();
 
+        // start the game
         game.PlayGame();
 
-
-
     }
-
 }
 
 /**
@@ -57,9 +45,10 @@ public class CardGame {
 class cardRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
-            //System.out.println ("Card with face value: " + Thread.currentThread().getName() + " is running.");
+            // start the threads for the cards
             try {
                 Thread.sleep (2000);
+                // every 2 seconds check on thread
             } catch ( InterruptedException e) {
                 System.out.println("Interupted exception");
             }
@@ -73,9 +62,10 @@ class cardRunnable implements Runnable {
 class deckRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
-            //System.out.println ("Deck with card values: " + Thread.currentThread().getName() + " is running.");
+            // start the threads for the deck
             try {
                 Thread.sleep (2000);
+                // every 2 seconds check on thread
             } catch ( InterruptedException e) {
                 System.out.println("Interupted exception");
             }
@@ -90,9 +80,10 @@ class deckRunnable implements Runnable {
 class playerRunnable implements Runnable {
     public void run () {
         for (int i = 0; i < 1; i ++) {
-            //System.out.println ("Player with value: " + Thread.currentThread().getName() + " is running.");
+            // start the threads for the players
             try {
                 Thread.sleep (2000);
+                // every 2 seconds check on thread
             } catch ( InterruptedException e) {
                 System.out.println("Interupted exception");
             }
